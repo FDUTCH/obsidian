@@ -1,8 +1,7 @@
-package config
+package proxy
 
 import (
 	"github.com/FDUTCH/obsidian/internal/util"
-	"github.com/FDUTCH/obsidian/proxy"
 	"github.com/FDUTCH/obsidian/proxy/balance"
 	"github.com/FDUTCH/obsidian/proxy/http_proxy"
 )
@@ -36,7 +35,7 @@ type Options struct {
 
 // Run creates and runs proxy
 func (c Options) Run() error {
-	p, err := proxy.New(c.Network, c.BufferSize, c.Key, c.Cert)
+	p, err := New(c.Network, c.BufferSize, c.Key, c.Cert)
 	if err != nil {
 		return err
 	}

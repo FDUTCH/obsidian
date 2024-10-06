@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/FDUTCH/obsidian/config"
+	"github.com/FDUTCH/obsidian/proxy"
 	"log"
 	"os"
 )
@@ -29,8 +29,8 @@ func main() {
 
 }
 
-func exampleConfigs() ([]config.Options, error) {
-	var configs = []config.Options{
+func exampleConfigs() ([]proxy.Options, error) {
+	var configs = []proxy.Options{
 		{
 			Port:    80,
 			Network: "http",
@@ -62,8 +62,8 @@ func exampleConfigs() ([]config.Options, error) {
 	return configs, err
 }
 
-func loadConfig() ([]config.Options, error) {
-	var configs []config.Options
+func loadConfig() ([]proxy.Options, error) {
+	var configs []proxy.Options
 
 	file, err := os.Open(configName)
 	if err != nil {
