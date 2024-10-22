@@ -1,4 +1,4 @@
-package udp
+package packet
 
 import (
 	"github.com/FDUTCH/obsidian/internal/pool"
