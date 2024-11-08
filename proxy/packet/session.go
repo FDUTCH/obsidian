@@ -5,6 +5,7 @@ import (
 	"io"
 	"net"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -16,8 +17,7 @@ type Session struct {
 	buff         []byte
 	mp           *sync.Map
 	writer       io.WriteCloser
-	mu           *sync.Mutex
-	lastActivity time.Time
+	lastActivity atomic.Pointer[time.Time]
 }
 
 func (s *Session) Close() error {
@@ -57,13 +57,10 @@ func (s *Session) handle(conn net.Conn) {
 }
 
 func (s *Session) active() {
-	s.mu.Lock()
-	s.lastActivity = time.Now()
-	s.mu.Unlock()
+	now := time.Now()
+	s.lastActivity.Store(&now)
 }
 
 func (s *Session) LastActivity() time.Time {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	return s.lastActivity
+	return *s.lastActivity.Load()
 }

@@ -70,7 +70,6 @@ func (p *Proxy) listen(remote func() (remoteAddress string), conn net.PacketConn
 			pool: p.pool,
 			mp:   p.connections,
 			conn: conn,
-			mu:   &sync.Mutex{},
 		})
 
 		session := w.(*Session)

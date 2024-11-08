@@ -1,36 +1,27 @@
 package udp
 
 import (
-	"fmt"
 	"github.com/FDUTCH/obsidian/proxy/balance"
 	"github.com/FDUTCH/obsidian/proxy/packet"
 )
 
 // Proxy - UDP implementation of proxy.Proxy
 type Proxy struct {
-	network  string
-	buffSize int
+	packetProxy *packet.Proxy
 }
 
 func NewProxy(buffSize int, network string) (*Proxy, error) {
-	if buffSize < 1 {
-		return nil, fmt.Errorf("bufferSize can not be of length less than 1")
+	p, err := packet.NewProxy(buffSize, network)
+	if err != nil {
+		return nil, err
 	}
-	return &Proxy{network: network, buffSize: buffSize}, nil
+	return &Proxy{packetProxy: p}, nil
 }
 
 func (p *Proxy) Listen(remoteAddress, localAddress string) error {
-	pr, err := packet.NewProxy(p.buffSize, p.network)
-	if err != nil {
-		return err
-	}
-	return pr.Listen(remoteAddress, localAddress)
+	return p.packetProxy.Listen(remoteAddress, localAddress)
 }
 
 func (p *Proxy) Balance(balancer balance.LoadBalancer, localAddress string) error {
-	pr, err := packet.NewProxy(p.buffSize, p.network)
-	if err != nil {
-		return err
-	}
-	return pr.Balance(balancer, localAddress)
+	return p.packetProxy.Balance(balancer, localAddress)
 }
